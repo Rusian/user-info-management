@@ -1,0 +1,133 @@
+@static_image_path: "../../../static/images";
+.page-login{
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: url('@{static_image_path}/login-bg-1.jpg');
+  background-repeat: repeat;
+  background-size: cover;
+}
+
+.page-login{
+  #logo{
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    & > img{
+      width: 144px;
+    }
+  }
+
+  .footer{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 40px;
+    padding: 11px 0 0;
+    background-color: #0A0B0F;
+
+    & > .copyright{
+      font-size: 12px;
+      color: #525253;
+      text-align: center;
+      margin: 0;
+    }
+  }
+}
+
+.page-login .login-box{
+  position: relative;
+  width: 400px;
+  height: 312px;
+  padding: 100px 20px 0 20px;
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 5px;
+  margin: -100px auto 0;
+
+  & > h2.title, & > h3{
+    position: absolute;
+    margin: 0;
+  }
+
+  & > h2.title{
+    top: 30px;
+    left: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #ccc;
+    line-height: 24px;
+
+    & > small{
+      font-size: 14px;
+      color: #999;
+      line-height: 14px;
+    }
+  }
+
+  & > h3{
+    top: 33px;
+    right: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 22px;
+    color: #ccc;
+  }
+
+  // reset ant-design form styles
+  .ant-form-item{
+    /*margin-bottom: 18px;*/
+
+    /*&:nth-child(2){*/
+    /*  margin-bottom: 30px;*/
+    /*}*/
+    &:nth-child(3){
+      margin-bottom: 10px;
+    }
+  }
+
+  .ant-input-affix-wrapper{
+    .ant-input-prefix, .ant-input-suffix{
+      color: #ccc;
+      font-size: 18px;
+    }
+
+    .ant-input-suffix{
+      cursor: pointer;
+    }
+
+    .ant-input{
+      background-color: rgba(0, 0, 0, 0.4);
+      color: #ddd;
+      border-color: #999;
+    }
+
+    .ant-input:not(:last-child) {
+      padding-right: 40px;
+    }
+
+    .ant-input:not(:first-child) {
+      padding-left: 40px;
+    }
+  }
+
+  .links{
+    text-align: center;
+    & > a{
+      display: inline-block;
+      padding: 0 10px;
+      line-height: 14px;
+      color: #ccc;
+      border-right: 1px solid #ccc;
+      &:last-child{
+        border-right: none;
+      }
+    }
+  }
+}

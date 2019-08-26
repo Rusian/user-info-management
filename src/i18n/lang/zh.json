@@ -1,0 +1,67 @@
+{
+  "PRODUCT-INFOS": {
+    "PRODUCT-NAME": "用户信息管理",
+    "PRODUCT-NAME-EN": "User Information Management",
+    "COPYRIGHT": "written by lxr"
+  },
+  "COMMON_ELEMENTS": {
+    "BUTTONS": {
+      "PREV": "上一步",
+      "NEXT": "下一步",
+      "FINISH": "完成",
+      "SEARCH": "搜索"
+    }
+  },
+  "LOGIN":{
+     "TITLE": "用户登录",
+     "USERNAME":"输入用户名",
+     "PASSWORD":"输入密码",
+     "LOGININ" : "登录",
+     "REGISTER" : "注册用户",
+    "FOGOTPASSWORD" : "忘记密码"
+  },
+  "DATACHART":{
+    "NAVI": "数据展示"
+  },
+  "DATALIST":{
+    "NAVI": "数据列表"
+  },
+  "FILTERS": {
+    "USERNAME": {
+      "NULL": "用户名不能为空",
+      "ERR": "用户名不符合要求(只能包含大小写字母、数字、下划线)",
+      "MINSIZE": "用户名最小长度为3个字符",
+      "MAXSIZE": "用户名最大长度为16个字符"
+    },
+    "REALNAME": {
+      "NULL": "真实姓名不能为空",
+      "ERR": "姓名不符合要求",
+      "MINSIZE": "用户名最小长度为4个字符",
+      "MAXSIZE": "姓名最大长度为16个字符"
+    },
+    "PASSWORD": {
+      "NULL": "请输入密码",
+      "ERR": "密码复杂度不符合要求(从大小写字母、数字、特殊字符中选择三种)",
+      "MINSIZE": "密码最小长度为8个字符",
+      "MAXSIZE": "密码最大长度为16个字符"
+    },
+    "PHONE": {
+      "NULL": "请输入常用手机",
+      "ERR": "请输入正确格式的手机号"
+    },
+    "MAILBOX": {
+      "NULL": "请输入常用邮箱",
+      "ERR": "请输入正确格式的邮箱"
+    },
+    "REMARK": {
+      "MAXSIZE": "说明的长度不允许超过32字符"
+    },
+    "ADDRESS": {
+      "NULL": "请输入常住地址"
+
+    },
+    "LOG_SEARCH":{
+      "ERR":"搜索条件不符合要求"
+    }
+  }
+}
