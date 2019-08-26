@@ -17,7 +17,8 @@ const state = {
   home_link: '#/dashboard-admin',
   admininfo: {
     username: "admin",
-    password: "12345678"
+    password: "12345678",
+    paths: []
   },
   userinfo: {
     realname: "",
@@ -25,7 +26,7 @@ const state = {
     email: "",
     phone: "",
     address: "",
-    paths: [],
+    
   },
 };
 
@@ -39,50 +40,19 @@ const mutations = {
   },
   SET_USER_INFOS(state, payload){
     const user_path = [
-      "dashboard_user",
-      "user_orders",
-      "user_billings",
-      "user_alarms",
-      "user_logs",
-      "user_settings_userinfo",
-      "user_settings_sysinfo",
-      "resource-application",
-      "auth-application",
-      "finish-application",
-      "user_settings_sysinfo"
+      "analysis",
+      "customer_management"
     ];
-
+    state.admininfo.paths = user_path
+  },
+  SET_CUSTOMER_INFO(state,payload){
     if(payload.username !== undefined){state.userinfo.username = payload.username}
     if(payload.name !== undefined){state.userinfo.nickname = payload.name}
     if(payload.type !== undefined){state.userinfo.type = payload.type}
     if(payload.status !== undefined){state.userinfo.status = payload.status}
     if(payload.email !== undefined){state.userinfo.email = payload.email}
     if(payload.phone !== undefined){state.userinfo.phone = payload.phone}
-    if(payload.authList !== undefined && payload.authList !== null){
-      state.userinfo.auths = vueIns.permsToBoolean(payload.authList);
-      let paths = [], permissions = payload.authList;
-      for(let i=0; i<dict.length; i++){
-        let match = 0;  // 权限匹配计数
-        if (dict[i].auths === null) {
-          paths.push(dict[i].path);
-          continue
-        }
-        for (let j = 0; j < permissions.length; j++) {
-          if (dict[i].auths.indexOf(permissions[j].id) !== -1) {
-            // 如果权限和路径要求权限匹配，则匹配计数+1
-            match ++  
-            // 如果匹配计数和路径要求的权限数目一致（可以认为是全部匹配）则将该条路径添加进入授权路径
-            if(dict[i].auths.length === match){
-              paths.push(dict[i].path)
-            }
-            
-          }
-        }
-      }
-      state.userinfo.paths = paths;
-    }else{
-      state.userinfo.paths = user_path;
-    }
+    if(payload.address !== undefined){state.userinfo.address = payload.address}
   },
   // 在state中设置当前语言
   SET_CURRENT_LANGUAGE(state, payload){
@@ -125,6 +95,10 @@ const mutations = {
     state.selectedTab = [];
     state.currentRoute = [];
     state.collapsed = false;
+    state.admininfo = {
+      username: "",
+      paths: [],
+    }
     state.userinfo = {
       realname: "",
       username: "",
