@@ -42,23 +42,22 @@
           },
           login_form_password: {
             initialValue: '',
-            rules: [{ required: true, message: '请输入密码' }]
+            rules: [{ required: true, message: '请输入密码' },
+            {min: 6, message: this.$t('FILTERS.PASSWORD.MINSIZE')}]
           }
         }
       }
     },
     mounted(){
-      // 进入登录页面之后清除public store的内容
+      // 进入登录页面之后清除store的内容
       this.EMPTY_STORE();
-      // 进入登录页面清除resource form data
-      this.INIT_RESOURCE();
       // 进入登录页面重置修改密码弹窗状态 防止登录其他用户时误弹起
-      this.TOGGLE_MODIFY_PASS_MODAL({show: false, closeable: true})
+      // this.TOGGLE_MODIFY_PASS_MODAL({show: false, closeable: true})
     },
     computed: {
       ...mapState({
-        login_form_data: state => state.login_store.login_form_data,
-        userinfo: state => state.public_store.userinfo,
+        login_form_data: state => state.store.login_form_data,
+        admininfo: state => state.store.admininfo,
       })
     },
     created(){
@@ -71,11 +70,8 @@
       })
     },
     methods: {
-      ...mapMutations('public_store', ['SET_USER_INFOS', 'EMPTY_STORE']),
-      ...mapMutations('user_management_store', ['TOGGLE_MODIFY_PASS_MODAL']),
-      ...mapMutations('resource_store', ['INIT_RESOURCE']),
-      ...mapActions('login_store', ['submitLogin']),
-      ...mapActions('resource_store', ['addCloud', 'queryCloud']),
+      ...mapMutations('store', [ 'SET_PATH', 'SET_USER_INFO', 'EMPTY_STORE']),
+      ...mapActions('store', ['submitLogin', 'getUsersList']),
       // 重置登录表单
       resetForm(){
         this.form.resetFields()
@@ -91,15 +87,14 @@
                 username: values.login_form_username,
                 password: values.login_form_password
                 }),
-                data = submit.data, accountType = data.type;
-              this.SET_USER_INFOS(data);
+                data = submit.data;
+                console.log("test")
+                console.log(submit.data.username+":"+submit.data.password);
+              this.SET_PATH(data);
               this.loading = false;
-              if(accountType === "admin" && !!this.userinfo.auths['resource.platform.query']){
-                // 只有admin类型用户可查询云平台资源
-                await this.queryCloud();
-              }
+              // await this.getUsersList();
               await this.$message.success('登录成功', 0.5);
-              this.$router.push({name: this.userinfo.paths[0]});
+              this.$router.push({name: this.admininfo.paths[0]});
             }catch(error){
               this.loading = false;
             }

@@ -1,0 +1,38 @@
+{
+  "users": [{
+    "username": "user1",
+    "realname": "AAA",
+    "phone": "13356421589",
+    "email": "aaa@qq.com",
+    "address": "BJ"
+  },
+  {
+    "username": "user2",
+    "realname": "BBB",
+    "phone": "18945698523",
+    "email": "bbb@qq.com",
+    "address": "JS"
+  },
+  {
+    "username": "user3",
+    "realname": "CCC",
+    "phone": "17745716596",
+    "email": "ccc@qq.com",
+    "address": "SH"
+  },
+  {
+    "username": "user4",
+    "realname": "DDD",
+    "phone": "15815648521",
+    "email": "ddd@qq.com",
+    "address": "WH"
+  },
+  {
+    "username": "user5",
+    "realname": "EEE",
+    "phone": "13736545569",
+    "email": "eee@qq.com",
+    "address": "CD"
+  }
+]
+}

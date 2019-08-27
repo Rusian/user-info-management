@@ -1,10 +1,7 @@
 <template>
-  <a-local-provider :locale="zhCN">
     <div id="app">
-      <img src="./assets/logo.png">
       <router-view/>
     </div>
-  </a-local-provider>
 </template>
 
 <script>
@@ -31,7 +28,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('public_store', ['SET_COUNTER'])
+    ...mapMutations('store', ['SET_COUNTER'])
   },
   destroyed(){
     this.counter = 0;

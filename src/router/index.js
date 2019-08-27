@@ -8,9 +8,9 @@ import Login from '~/login/index'
 // 公共导航栏
 import navigation from '~/public/navigation'   // 导航框架页面
 //成员管理
-import customerManage from '~/customer_management/customer_management'
+import customerInfo from '~/customer_management/customerInfo'
 //数据分析
-import analysis from '~/dataView/userInfo.vue'
+import customerAnalysis from '~/customer_management/customer_analysis'
 
 Vue.use(Router)
 
@@ -35,15 +35,15 @@ const router = new Router({
       children: [
         //数据分析
         {
-          path: 'analysis',
-          name: 'analysis',
-          component: analysis
+          path: 'customer-analysis',
+          name: 'customer_analysis',
+          component: customerAnalysis
         },
         //成员管理
         {
           path: 'customer-management',
           name: 'customer_management',
-          component: customerManage
+          component: customerInfo
         },
       ]
     },

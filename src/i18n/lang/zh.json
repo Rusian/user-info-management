@@ -21,10 +21,14 @@
     "FOGOTPASSWORD" : "忘记密码"
   },
   "DATACHART":{
-    "NAVI": "数据展示"
+    
+    "NAVI": "数据展示",
+    "NAME": "数据分析"
   },
   "DATALIST":{
-    "NAVI": "数据列表"
+    "NAVI": "数据列表",
+    "NAME": "人员管理"
+
   },
   "FILTERS": {
     "USERNAME": {
@@ -42,7 +46,7 @@
     "PASSWORD": {
       "NULL": "请输入密码",
       "ERR": "密码复杂度不符合要求(从大小写字母、数字、特殊字符中选择三种)",
-      "MINSIZE": "密码最小长度为8个字符",
+      "MINSIZE": "密码最小长度为6个字符",
       "MAXSIZE": "密码最大长度为16个字符"
     },
     "PHONE": {
