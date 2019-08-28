@@ -7,6 +7,7 @@ import store from './store'
 import Antd from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
 import i18n from './i18n/'
+import utils from './utils'
 
 Vue.config.productionTip = false
 Vue.use(Antd)
@@ -17,6 +18,7 @@ new Vue({
   router,
   store,
   i18n,
+  utils,
   components: { App },
   template: '<App/>'
 })

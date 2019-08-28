@@ -3,7 +3,7 @@
     <div class="ant-page-header">
     <a-breadcrumb>
       <a-breadcrumb-item>
-        <a href="#/customer_analysis"> <a-icon type="home" /></a>
+        <a href="#/admin"> <a-icon type="home" /></a>
       </a-breadcrumb-item>
       <a-breadcrumb-item>
         {{$t('DATALIST.NAME')}}
@@ -13,15 +13,16 @@
   <a-card :bordered="false" :bodyStyle="{'padding': '24px'}">
     <a-spin :spinning="spinning">
       <a-icon slot="indicator" type="loading" style="font-size: 24px" spin />
-      <a-table :columns="columns" :dataSource="usersList" :pagination="tablePagination" :rowKey="record => record.id" @change="handleTableChange" size="middle">
+      <a-table :columns="columns" :dataSource="usersList" :pagination="tablePagination" :rowKey="record => record.key" @change="handleTableChange" size="middle">
         <template slot="actions" slot-scope="text, record">
-        <a href="javascript:;" :id="'editUser_' + record.username" @click="editUser(record)">编辑</a>
+        <a href="javascript:;" :id="'editUser_' + record.key" @click="editUser(record)">编辑</a>
         <a-divider type="vertical" />
           <!--more action-->
       </template>
       </a-table>
     </a-spin>
   </a-card>
+  <editInfo></editInfo>
 </div>
 </template>
 
@@ -44,19 +45,18 @@
     },
     {
       title: "手机",
-      key: "phone",
-      dataIndex: "phone",
+      key: 'phone',
+      dataIndex: 'phone',
     },
     {
       title: "地址",
-      key: "address",
-      dataIndex: "address",
-      dataIndex: "address",
+      key: 'address',
+      dataIndex: 'address',
     },
     {
       title: "操作",
-      key: "id",
-      dataIndex: "id",
+      key: 'id',
+      dataIndex: 'id',
       scopedSlots: { customRender: 'actions'}
     }
   ];
@@ -86,23 +86,18 @@
         selectedUserID: state => state.store.selectedUserID,
       }),
     },
-    watch: {
-      // 监视排序规则是否变化 如有变化才更新列表
-      sortRule(newVal, oldVal){
-        if(newVal !== oldVal){
-          this.updateListData();
-        }
-      }
-    },
     methods: {
       ...mapActions('store', ["getUsersList"]),
-      ...mapMutations('store', ["TOGGLE_USER_EDIT_MODAL", "SET_USER_ID",'SET_USER_INFORMATION']),
+      ...mapMutations('store', ["TOGGLE_USER_EDIT_MODAL","FILL_USERS_LIST"]),
       // 更新表格数据
+
+
       async updateListData(){
         this.tablePagination.current = 1;    // 重新获取数据之后，将页面重置为1
         this.spinning = true;
         try{
           await this.getUsersList({username: "", realname: "", phone: "", email: "", address: ""})
+          // await this.getUsersList({username: "", realname: "", phone: "", email: "", address: ""})
           this.spinning = false
         }catch (e) {
           this.spinning = false

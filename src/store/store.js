@@ -1,7 +1,6 @@
 'use strict';
 // store
 import Vue from 'vue'
-import api from '@/api'
 import axios from 'axios'
 
 const vueIns = new Vue();
@@ -10,12 +9,11 @@ const state = {
   pulseCounter: 0,
   locale: "zh",// 默认显示语言 简体中文 zh-cn
   layoutStyle: "",
-  selectedKeys: ['customer-management'],
+  selectedKeys: ['customer-analysis'],
   openKeys: [],// 展开的菜单项目
-  selectedTab: "",
   currentRoute: {},
   collapsed: false,
-  home_link: '#/customer-management',
+  home_link: '#/admin',
   admininfo: {
     username: "admin",
     password: "12345678",
@@ -36,7 +34,6 @@ const state = {
     address: "",
   },
   usersList: [],
-  usersListDisplay: [],
   selectedUserID: "",
   editUserModalShow: false,
   modifyInfoModal: {
@@ -60,22 +57,6 @@ const mutations = {
     ];
     state.admininfo.paths = user_path
   },
-  SET_USER_INFO(state,payload){
-    if(payload.username !== undefined){state.userinfo.username = payload.username}
-    if(payload.name !== undefined){state.userinfo.realname = payload.name}
-    if(payload.email !== undefined){state.userinfo.email = payload.email}
-    if(payload.phone !== undefined){state.userinfo.phone = payload.phone}
-    if(payload.address !== undefined){state.userinfo.address = payload.address}
-  },
-  SET_USER_INFORMATION(state,payload){
-    state.user_formData.username = payload.create_user_username ? payload.create_user_username : "";
-    state.user_formData.mail = payload.ceate_user_mailbox ? payload.ceate_user_mailbox : "";
-    state.user_formData.phone = payload.create_user_phone ? payload.create_user_phone : "";
-    state.user_formData.realname = payload.create_user_realname ? payload.create_user_realname : "";
-    state.user_formData.address = payload.create_user_address ? payload.create_user_address : ""
-  },
-
-
   // 在state中设置当前语言
   SET_CURRENT_LANGUAGE(state, payload){
     state.locale = payload
@@ -97,10 +78,7 @@ const mutations = {
   SET_OPEN_KEY(state, payload){
     state.openKeys = payload
   },
-  // 在state中设置当前选中tab
-  // SET_SELECTED_TAB(state, payload){
-  //   state.selectedTab = payload
-  // },
+
   // 设置当前路由对象
   SET_CURRENT_ROUTE(state, payload){
     state.currentRoute = payload
@@ -123,8 +101,7 @@ const mutations = {
       username: "",
       email: "",
       phone: "",
-      address: "",
-      paths: [],
+      address: ""
     }
   },
 
@@ -139,27 +116,41 @@ const mutations = {
   // 根据获取的数据填充用户列表
   FILL_USERS_LIST(state, payload){
     let data = payload.data;
-    state.usersList = data;
-  }
+    state.usersList = data.users;
+  },
+
+    // 发送编辑用户表单
+  UPDATE_USERS_LIST(state, payload){
+      let data = state.usersList
+      for(let i=0; i<data.length; i++){
+        if(data[i].key == payload.id){
+          data[i].username = payload.info.username;
+          data[i].realname = payload.info.realname;
+          data[i].phone = payload.info.phone;
+          data[i].email = payload.info.email;
+          data[i].address = payload.info.address;
+        }  
+      }
+      state.usersList = data;
+    },
 };
 
 const actions = {
   
   // 提交登录表单
   async submitLogin({state}, payload){
-    return api.adminService.login(payload.username, payload.password)
-    
+    return true
   },
 
   // 获取用户列表
   async getUsersList({commit}, payload){
     let fetch, data;
     try{
-      await axios.get("../static/user.json").then( res => {
-        fetch = res.data;
+      await axios.get("../static/user.json").then( response => {
+        console.log(response.data);
+        fetch = response.data;
       })
-      data = await fetch.data;
-
+      data = await fetch;
       commit('FILL_USERS_LIST', {data: data});
       return data
     }
@@ -168,10 +159,7 @@ const actions = {
     }
 
   },
-  // 发送编辑用户表单
-  async sendUserEditForm({state}, payload){
-    return api.userService.editUser(payload.id, payload.info)
-  },
+
 };
 
 export default {

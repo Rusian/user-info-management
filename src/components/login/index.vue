@@ -83,18 +83,9 @@
         this.form.validateFieldsAndScroll(async (err, values) => {
           if (!err) {
             try{
-              let submit = await this.submitLogin({
-                username: values.login_form_username,
-                password: values.login_form_password
-                }),
-                data = submit.data;
-                console.log("test")
-                console.log(submit.data.username+":"+submit.data.password);
-              this.SET_PATH(data);
-              this.loading = false;
               // await this.getUsersList();
               await this.$message.success('登录成功', 0.5);
-              this.$router.push({name: this.admininfo.paths[0]});
+              this.$router.push({path: '/admin'});
             }catch(error){
               this.loading = false;
             }

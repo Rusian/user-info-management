@@ -1,22 +1,44 @@
 <template>
-  <a-modal title="编辑信息" v-model="editUserModalShow" @ok="handleModalOk" @cancle="handleModalCancel">
+  <a-modal title="编辑信息" v-model="editUserModalShow" @ok="handleModalOk" @cancle="handleModalCancel" id="edit-user-info-modal" class="edit-user-info-modal">
     <a-form :form="form" @submit="handleModalOk">
       <a-form-item label="账户名：" :label-col="{ span: 4 }" :wrapper-col="{ span: 20 }">
-        <a-input v-decorator="['update_form_username', formConfigs.update_form_username]" size="large" placeholder="请输入需要修改的用户名" ref="userNameInput" disabled>
+        <a-input v-decorator="['edit_form_username', edit_form_username={initialValue: '',
+      rules: [{ required: true, message: this.$t('FILTERS.USERNAME.NULL'), whitespace: true }]}]" size="large" placeholder="请输入需要修改的用户名" ref="userNameInput">
         </a-input>
       </a-form-item >
       <a-form-item label="姓名：" :label-col="{ span: 4 }" :wrapper-col="{ span: 20 }">
-        <a-input v-decorator="['update_form_realname', formConfigs.update_form_realname]" size="large" placeholder="请输入需要修改的姓名" ref="userNameInput">
+        <a-input v-decorator="['edit_form_realname', edit_form_realname={
+          initialValue: '',
+          rules: [{ required: true, message: 'Please input your realname!', whitespace: true }]}]" size="large" placeholder="请输入需要修改的姓名" ref="userNameInput">
         </a-input>
       </a-form-item >
       <a-form-item label="邮箱：" :label-col="{ span: 4 }" :wrapper-col="{ span: 20 }">
-        <a-input   v-decorator="['update_form_mailbox', formConfigs.update_form_mailbox]" size="large" placeholder="请输入需要修改的邮箱"  ></a-input>
+        <a-input   v-decorator="['edit_form_email', edit_form_email={
+           initialValue: '@',
+           rules: [{
+            pattern: this.patterns.email, message: this.$t('FILTERS.EMAIL.ERR'), // 校验邮箱 请输入正确格式的邮箱
+           }, {
+            required: true, message: this.$t('FILTERS.EMAIL.NULL'), // 校验邮箱 请输入常用邮箱
+           }]
+        }]" size="large" placeholder="请输入需要修改的邮箱"  ></a-input>
       </a-form-item>
       <a-form-item label="手机：" :label-col="{ span: 4 }" :wrapper-col="{ span: 20 }">
-        <a-input  v-decorator="['update_form_phone', formConfigs.update_form_phone]" size="large" placeholder="请输入需要修改的手机" ></a-input>
+        <a-input  v-decorator="['edit_form_phone', edit_form_phone={
+          initialValue: '13344445555',
+          rules: [{
+            required: true, message: this.$t('FILTERS.PHONE.NULL'), // 校验手机 请输入常用手机
+          },{
+            pattern: this.patterns.phone, message: this.$t('FILTERS.PHONE.ERR')  // 校验手机 请输入正确格式的手机号
+          }]
+        }]" size="large" placeholder="请输入需要修改的手机" ></a-input>
       </a-form-item>
        <a-form-item label="地址：" :label-col="{ span: 4 }" :wrapper-col="{ span: 20 }">
-        <a-input  v-decorator="['update_form_address', formConfigs.update_form_address]" size="large" placeholder="请输入需要修改的地址" ></a-input>
+        <a-input  v-decorator="['edit_form_address', edit_form_address={
+          initialValue: '',
+          rules: [{
+            required: true, message: this.$t('FILTERS.ADDRESS.NULL'), // 校验手机 请输入常住地址
+          }]
+        }]" size="large" placeholder="请输入需要修改的地址" ></a-input>
       </a-form-item>
     </a-form>
     <template slot="footer">
@@ -29,45 +51,11 @@
 </template>
 <script>
   import { mapState, mapActions, mapMutations } from 'vuex'
+  
   export default {
     data(){
       return {
-        // 表单项目设置项
-        formConfigs: {
-          update_form_username: {
-            initialValue: '',
-            rules: [{ required: true, message: this.$t('FILTERS.USERNAME.NULL'), whitespace: true }]
-          },
-          update_form_realname: {
-            initialValue: '',
-            rules: [{ required: false, message: 'Please input your realname!', whitespace: true },
-              {max: 16, message: this.$t('FILTERS.realname.MAXSIZE')} // 校验昵称 昵称最大长度为16位
-            ]
-          },
-          update_form_mailbox: {
-            initialValue: '',
-            rules: [{
-              type: 'email', message: this.$t('FILTERS.MAILBOX.ERR'), // 校验邮箱 请输入正确格式的邮箱
-            }, {
-              required: true, message: this.$t('FILTERS.MAILBOX.NULL'), // 校验邮箱 请输入常用邮箱
-            }]
-          },
-          update_form_phone: {
-            initialValue: '',
-            rules: [{
-              required: true, message: this.$t('FILTERS.PHONE.NULL'), // 校验手机 请输入常用手机
-            },{
-              pattern: this.patterns.phone, message: this.$t('FILTERS.PHONE.ERR')  // 校验手机 请输入正确格式的手机号
-            }],
-          },
-          update_form_address: {
-            initialValue: '',
-            rules: [{
-              required: true, message: this.$t('FILTERS.ADDRESS.NULL'), // 校验手机 请输入常住地址
-            }],
-          },
-          loading: false
-        }
+        loading: false
       }
     },
     beforeCreate(){
@@ -75,6 +63,7 @@
     },
     computed: {
       ...mapState({
+        usersList: state => state.store.usersList,
         userInfo: state => state.store.editUserInfo
       }),
       // 绑定点为v-model 故get和set方法都要写
@@ -89,20 +78,21 @@
           this.TOGGLE_USER_EDIT_MODAL({show: val, info: {}})
         }
       }
+      
     },
     methods: {
-      ...mapMutations('store', ['TOGGLE_USER_EDIT_MODAL']),
-      ...mapActions('store', ['sendUserEditForm', 'getUsersList']),
+      ...mapMutations('store', ['TOGGLE_USER_EDIT_MODAL','UPDATE_USERS_LIST']),
+      ...mapActions('store', [ 'getUsersList']),
       initModal(){
         this.loading = false;
         // 通过读取列表数据为表单赋值
         setTimeout(()=>{
           this.form.setFieldsValue({
-            update_form_username: this.userInfo.username,
-            update_form_realname: this.userInfo.name,
-            update_form_mailbox: this.userInfo.email,
-            update_form_phone: this.userInfo.phone,
-            update_form_address: this.userInfo.address
+            edit_form_username: this.userInfo.username,
+            edit_form_realname: this.userInfo.realname,
+            edit_form_email: this.userInfo.email,
+            edit_form_phone: this.userInfo.phone,
+            edit_form_address: this.userInfo.address
           });
         }, 0);
       },
@@ -113,15 +103,14 @@
           if (!err) {
             try{
               let userInfoObj = {
-                username: values.update_form_username,
-                name: values.update_form_realname,
-                phone: values.update_form_phone,
-                email: values.update_form_mailbox,
-                address: values.update_form_address
+                username: values.edit_form_username,
+                realname: values.edit_form_realname,
+                phone: values.edit_form_phone,
+                email: values.edit_form_email,
+                address: values.edit_form_address
               };
-              await this.sendUserEditForm({id: this.userInfo.id, info: userInfoObj});
+              await this.UPDATE_USERS_LIST({id: this.userInfo.key, info: userInfoObj});
               await this.$message.success('修改成功!', 0.5);
-              await this.getUsersList(this.searchObj);
               this.TOGGLE_USER_EDIT_MODAL({show: false, info: {}})
             }catch(e){
               this.loading = false;
@@ -131,7 +120,7 @@
         });
       },
       handleModalCancel(){
-        this.loading = false;
+        // this.loading = false;
         this.TOGGLE_USER_EDIT_MODAL({show: false, info: {}})
       }
     }

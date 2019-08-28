@@ -7,10 +7,12 @@ import Router from 'vue-router'
 import Login from '~/login/index'    
 // 公共导航栏
 import navigation from '~/public/navigation'   // 导航框架页面
-//成员管理
-import customerInfo from '~/customer_management/customerInfo'
+
 //数据分析
 import customerAnalysis from '~/customer_management/customer_analysis'
+//成员管理
+import customerInfo from '~/customer_management/customerInfo'
+
 
 Vue.use(Router)
 
@@ -31,6 +33,7 @@ const router = new Router({
     {
       //用户导航项目
       path: '/admin',
+      name: 'admin',
       component: navigation,
       children: [
         //数据分析

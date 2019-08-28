@@ -8,7 +8,6 @@ moment.locale('zh-cn');
 
 Vue.prototype.$bus = new Vue();                                                                                         // $bus 消息事件管道                                                                              // unixToDate 时间戳转日期
 Vue.prototype.permsToBoolean = permsToBoolean;
-Vue.prototype.bytesToSize = bytesToSize;
 Vue.prototype.removeObserver = removeObserver;   // 移除Object的观察者模式
 Vue.prototype.$moment = moment;                 // 将moment 注册为全局组件 并默认使用中文模式
 
@@ -46,6 +45,5 @@ function permsToBoolean(perms){
 
 export default {
   $bus: new Vue(),
-  permsToBoolean: permsToBoolean,
-  bytesToSize: bytesToSize,
+  permsToBoolean: permsToBoolean
 }
