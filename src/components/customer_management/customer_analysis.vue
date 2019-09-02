@@ -10,13 +10,40 @@
         </a-breadcrumb-item>
       </a-breadcrumb>
     </div>
+    <a-card :bordered="false" :bodyStyle="{'padding': '24px'}">
+    <takeCharts></takeCharts>
+    </a-card>
 
    
   </div>
 </template>
 <script>
+import { mapState, mapActions, mapMutations } from 'vuex' 
+import { takeCharts } from '~/customer_management'
+import { async } from 'q';
 export default {
-  
+  components:{
+    takeCharts
+  },
+  mounted(){
+    this.loadData()
+  },
+  computed: {
+    ...mapState({
+      useConditionList: state => state.store.useConditionList
+    })
+  },
+  methods: {
+    ...mapActions('store', ['getConditionList']),
+    ...mapMutations('store','FILL_CONDITION_LIST'),
+    async loadData(){
+      try{
+        await this.getConditionList({uptime: "", cpu: "", useram: ""})
+      }catch(e) {
+        
+      }
+    },
+  },
 }
 </script>
 <style>

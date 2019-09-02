@@ -40,6 +40,7 @@ const state = {
     show: false,    // 是否显示用户更改个人信息窗口
   },  
   editUserInfo: "",
+  useConditionList: [],
 };
 
 const getters = {
@@ -119,7 +120,14 @@ const mutations = {
     state.usersList = data.users;
   },
 
-    // 发送编辑用户表单
+  //根据获取的数据填充需要的信息CPU
+  FILL_CONDITION_LIST(state, payload){
+    let data = payload.data
+    state.useConditionList = data
+  },
+
+
+  // 发送编辑用户表单
   UPDATE_USERS_LIST(state, payload){
       let data = state.usersList
       for(let i=0; i<data.length; i++){
@@ -133,6 +141,10 @@ const mutations = {
       }
       state.usersList = data;
     },
+    
+
+
+
 };
 
 const actions = {
@@ -147,7 +159,6 @@ const actions = {
     let fetch, data;
     try{
       await axios.get("../static/user.json").then( response => {
-        console.log(response.data);
         fetch = response.data;
       })
       data = await fetch;
@@ -160,6 +171,20 @@ const actions = {
 
   },
 
+  //获取CPU、内存等使用信息
+  async getConditionList({commit},payload){
+    let fetch, data;
+    try{
+      await axios.get("../static/cpu-data.json").then ( response => {
+        fetch = JSON.stringify(response.data,['uptime','cpu','useram']);
+      })
+      data =await fetch;
+      commit('FILL_CONDITION_LIST',{data: data});
+    }
+    catch(error){
+      throw error
+    }
+  }
 };
 
 export default {
