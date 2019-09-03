@@ -52,6 +52,7 @@ export default {
 .ant-page-header{
   .ant-breadcrumb{
     margin-bottom: 12px;
+    margin-left: 10px;
   }
 
   .ant-page-header-title-view{

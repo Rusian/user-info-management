@@ -2,14 +2,16 @@
 // store
 import Vue from 'vue'
 import axios from 'axios'
-
+import moment from 'moment'
 const vueIns = new Vue();
+
+
 
 const state = {
   pulseCounter: 0,
   locale: "zh",// 默认显示语言 简体中文 zh-cn
   layoutStyle: "",
-  selectedKeys: ['customer-analysis'],
+  selectedKeys: ['admin'],
   openKeys: [],// 展开的菜单项目
   currentRoute: {},
   collapsed: false,
@@ -33,6 +35,7 @@ const state = {
     phone: "",
     address: "",
   },
+  routePaths:[],
   usersList: [],
   selectedUserID: "",
   editUserModalShow: false,
@@ -40,7 +43,8 @@ const state = {
     show: false,    // 是否显示用户更改个人信息窗口
   },  
   editUserInfo: "",
-  useConditionList: [],
+  useConditionList: [
+  ],
 };
 
 const getters = {
@@ -50,13 +54,6 @@ const getters = {
 const mutations = {
   SET_COUNTER(state, payload){
     state.pulseCounter = payload.counter
-  },
-  SET_PATH(state, payload){
-    const user_path = [
-      "analysis",
-      "customer_management"
-    ];
-    state.admininfo.paths = user_path
   },
   // 在state中设置当前语言
   SET_CURRENT_LANGUAGE(state, payload){
@@ -92,7 +89,7 @@ const mutations = {
   // 清空强制存储的状态
   EMPTY_STORE(state, payload){
     state.pulseCounter = 0;
-    state.selectedKeys = ['customer_management'];
+    state.selectedKeys = ['admin'];
     state.openKeys = [];
     // state.selectedTab = [];
     state.currentRoute = [];
@@ -103,7 +100,13 @@ const mutations = {
       email: "",
       phone: "",
       address: ""
-    }
+    };
+    const user_path = [
+      'admin',
+      "customer_analysis",
+      "customer_management"
+    ];
+    state.routePaths = user_path
   },
 
   TOGGLE_USER_EDIT_MODAL(state, payload){
@@ -173,10 +176,11 @@ const actions = {
 
   //获取CPU、内存等使用信息
   async getConditionList({commit},payload){
-    let fetch, data;
+    let jsonstr, fetch, data;
     try{
-      await axios.get("../static/cpu-data.json").then ( response => {
-        fetch = JSON.stringify(response.data,['uptime','cpu','useram']);
+      await axios.get("../static/cpu-data3.json").then ( response => {
+        jsonstr = JSON.stringify(response.data,['uptime','cpu','useram']);
+        fetch = eval("("+jsonstr+")")
       })
       data =await fetch;
       commit('FILL_CONDITION_LIST',{data: data});

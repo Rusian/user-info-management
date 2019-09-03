@@ -58,6 +58,7 @@
       ...mapState({
         login_form_data: state => state.store.login_form_data,
         admininfo: state => state.store.admininfo,
+        routePaths: state => state.store.routePaths
       })
     },
     created(){
@@ -85,7 +86,7 @@
             try{
               // await this.getUsersList();
               await this.$message.success('登录成功', 0.5);
-              this.$router.push({path: '/admin'});
+              this.$router.push({path: this.routePaths[0]});
             }catch(error){
               this.loading = false;
             }

@@ -28,6 +28,9 @@ export default new Vuex.Store({
             collapsed: val.store.collapsed,
             selectedKeys: val.store.selectedKeys,
             openKeys: val.store.openKeys,
+            useConditionList: val.store.useConditionList,
+            usersList: val.store.usersList,
+            routePaths: val.store.routePaths
           },
         }
       }

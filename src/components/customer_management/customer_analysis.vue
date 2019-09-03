@@ -25,25 +25,12 @@ export default {
   components:{
     takeCharts
   },
-  mounted(){
-    this.loadData()
-  },
   computed: {
     ...mapState({
       useConditionList: state => state.store.useConditionList
     })
   },
-  methods: {
-    ...mapActions('store', ['getConditionList']),
-    ...mapMutations('store','FILL_CONDITION_LIST'),
-    async loadData(){
-      try{
-        await this.getConditionList({uptime: "", cpu: "", useram: ""})
-      }catch(e) {
-        
-      }
-    },
-  },
+
 }
 </script>
 <style>

@@ -5,12 +5,12 @@
       <!--导航菜单项目-->
       <a-menu theme="dark" mode="inline" :openKeys="openKeys" :selectedKeys="selectedKeys" @click="handleClick" @openChange="onOpenChange">
         <!--数据展示-->
-        <a-menu-item key="customer_analysis" id="customer_analysis">
+        <a-menu-item v-if="routePaths.indexOf('customer_analysis') > -1" key="customer_analysis" id="customer_analysis">
           <a-icon type="stock" />
           <span class="nav-text">{{$t('DATACHART.NAVI')}}</span>
         </a-menu-item>
         <!--数据列表-->
-        <a-menu-item key="customer_management" id="customer_management">
+        <a-menu-item v-if="routePaths.indexOf('customer_management') > -1" key="customer_management" id="customer_management">
           <a-icon type="database" />
           <span class="nav-text">{{$t('DATALIST.NAVI')}}</span>
         </a-menu-item>
@@ -39,7 +39,7 @@
 
     data() {
       return {
-        selectedKeysLocal: ['customer_analysis'],
+        selectedKeysLocal: ['admin'],
       }
     },
     async mounted() {
@@ -61,6 +61,7 @@
         selectedKeys: state => state.store.selectedKeys,
         openKeys: state => state.store.openKeys,
         layoutStyle: state => state.store.layoutStyle,
+        routePaths: state => state.store.routePaths
       }),
     },
     methods: {
